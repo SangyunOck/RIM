@@ -16,6 +16,7 @@ class DB:
         self.nice_company_proper_sell2_price = []
         self.nice_company_delta = []
         self.nice_company_category = []
+        self.nice_company_product = []
 
         self.nice_company_between_codes = []
         self.nice_company_between_names = []
@@ -27,8 +28,9 @@ class DB:
         self.nice_company_between_proper_sell2_price = []
         self.nice_company_between_delta = []
         self.nice_company_between_category = []
+        self.nice_company_between_product = []
 
-    def addCompany(self, company_type, code, name, sell_price, reduce_10, reduce_20, now_price, category, ROA,
+    def addCompany(self, company_type, code, name, sell_price, reduce_10, reduce_20, now_price, category, product, ROA,
                    ROA_trend):
 
         delta = round((reduce_20 / now_price - 1) * 100, 2)
@@ -43,6 +45,7 @@ class DB:
             self.nice_company_proper_sell1_price.append(reduce_10)
             self.nice_company_proper_sell2_price.append(sell_price)
             self.nice_company_category.append(category)
+            self.nice_company_product.append(product)
             self.nice_company_delta.append(delta)
             print("좋은 회사 발견 ! : " + name, sell_price, reduce_10, reduce_20, now_price)
 
@@ -56,6 +59,7 @@ class DB:
             self.nice_company_between_proper_sell1_price.append(reduce_10)
             self.nice_company_between_proper_sell2_price.append(sell_price)
             self.nice_company_between_category.append(category)
+            self.nice_company_between_product.append(product)
             self.nice_company_between_delta.append(delta)
             print("좋은 회사 발견 ! : " + name, sell_price, reduce_10, reduce_20, now_price)
 
@@ -65,6 +69,7 @@ class DB:
         nice_company_pd = pd.DataFrame({'종목코드': self.nice_company_codes,
                                         '종목명': self.nice_company_names,
                                         '종목분류': self.nice_company_category,
+                                        '주요제품': self.nice_company_product,
                                         'ROA': self.nice_company_ROA,
                                         'ROA_추세': self.nice_company_ROA_trend,
                                         '현재가': self.nice_company_now_price,
@@ -76,6 +81,7 @@ class DB:
         nice_company_between_pd = pd.DataFrame({'종목코드': self.nice_company_between_codes,
                                                 '종목명': self.nice_company_between_names,
                                                 '종목분류': self.nice_company_between_category,
+                                                '주요제품': self.nice_company_between_product,
                                                 'ROA': self.nice_company_between_ROA,
                                                 'ROA_추세': self.nice_company_between_ROA_trend,
                                                 '현재가': self.nice_company_between_now_price,

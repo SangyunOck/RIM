@@ -18,13 +18,15 @@ def get_sum_int(data):
 
 
 def get_expected_value_4val(data1, data2, data3, data4, typeCheck):
+    first_rate = data1[1] * 2 / (data2[0] + data3[0] + data2[1] + data3[1]) if data2[0] + data3[0] + data2[1] + data3[
+        1] != 0 else 0
 
-    first_rate = data1[1] * 2 / (data2[0] + data3[0] + data2[1] + data3[1]) if data2[0] + data3[0] + data2[1] + data3[1] != 0 else 0
-
-    second_rate = data1[2] * 2 / (data2[1] + data3[1] + data2[2] + data3[2]) if data2[1] + data3[1] + data2[2] + data3[2] != 0 else 0
+    second_rate = data1[2] * 2 / (data2[1] + data3[1] + data2[2] + data3[2]) if data2[1] + data3[1] + data2[2] + data3[
+        2] != 0 else 0
 
     quarter_sum = data4
-    third_rate = quarter_sum * 2 / (data2[2] + data3[2] + data2[3] + data3[3]) if data2[2] + data3[2] + data2[3] + data3[3] != 0 else 0
+    third_rate = quarter_sum * 2 / (data2[2] + data3[2] + data2[3] + data3[3]) if data2[2] + data3[2] + data2[3] + \
+                                                                                  data3[3] != 0 else 0
 
     if typeCheck == "영업자산이익률":
         if first_rate < second_rate < third_rate or first_rate > second_rate > third_rate:
@@ -47,7 +49,6 @@ def get_expected_value_4val(data1, data2, data3, data4, typeCheck):
 def get_expected_value_3val(data1, data2, data3):
     result = data3 * 2 / (data2[2] + data2[3]) if data2[2] + data2[3] > 0 else 0
     return result
-
 
 
 def get_non_operating_profit(operating_profit, interest_expense, income_tax_expense, net_income):
@@ -83,12 +84,12 @@ def get_value_by_name(data, data_type, name_get, is_year):
 
 def getCompanyDict():
     con = sqlite3.connect(FILE_PATH + "total.db")
-    company = pd.read_sql("select * from company", con, index_col='index')
+    company = pd.read_sql("select * from total", con, index_col='index')
     company_dict = {}
 
     for i in range(len(company)):
-        company_dict[company.iloc[i]['code']] = company.iloc[i]['name']
-
+        content = company.iloc[i]
+        company_dict[content['종목코드']] = (content['회사명'], content['업종'], content['주요제품'])
     return company_dict
 
 

@@ -10,20 +10,20 @@ class Main:
     def __init__(self):
         company = getCompanyDict()
         codes = list(company.keys())
-        names = list(company.values())
+        contents = list(company.values())
 
         self.db = DB()
         count = 1
-        for code, name in zip(codes, names):
-            print(str(count) + '/' + str(len(codes)), code, name)
+        for code, content in zip(codes, contents):
+            print(str(count) + '/' + str(len(codes)), code, *content)
             count += 1
             try:
-                self.process(code, name, "연결")
+                self.process(code, *content, "연결")
                 time.sleep(0.1)
 
             except ZeroDivisionError:
                 try:
-                    self.process(code, name, "별도")
+                    self.process(code, *content, "별도")
                     time.sleep(0.1)
                 except IndexError:
                     pass
@@ -33,7 +33,7 @@ class Main:
 
         self.db.saveData()
 
-    def process(self, code, name, linked):
+    def process(self, code, name, category, product, linked):
         if linked == "연결":
             time.sleep(0.1)
             fn_web = requests.get(
@@ -52,12 +52,11 @@ class Main:
         # if calc.get_ROA() >= 0.1 and calc.get_allocation() >= 1:
         if not check_if_black_list(calc.get_category()):
             if company_type == "low":
-                self.db.addCompany("low", code, name, *calc.get_prices(), get_now_price(code), calc.get_category(),
+                self.db.addCompany("low", code, name, *calc.get_prices(), get_now_price(code), category, product,
                                    round(calc.get_ROA(), 2), round(calc.get_ROA_trend(), 2))
 
             elif company_type == "between":
-                self.db.addCompany("between", code, name, *calc.get_prices(), get_now_price(code),
-                                   calc.get_category(),
+                self.db.addCompany("between", code, name, *calc.get_prices(), get_now_price(code), category, product,
                                    round(calc.get_ROA(), 2), round(calc.get_ROA_trend(), 2))
 
 
