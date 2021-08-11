@@ -1,5 +1,3 @@
-import requests
-from bs4 import BeautifulSoup
 from datetime import datetime
 import numpy as np
 
@@ -15,14 +13,20 @@ class RIM:
         for row in data:
             name = row.find('div')
             if name and name.text.strip() == "발행주식수(보통주/ 우선주)":
-                total = int(row.find(class_='r').text.split('/')[0].strip().replace(',', '')) + int(
-                    row.find(class_='r').text.split('/')[1].strip().replace(',', ''))
+                try:
+                    total = int(row.find(class_='r').text.split('/')[0].strip().replace(',', '')) + int(
+                        row.find(class_='r').text.split('/')[1].strip().replace(',', ''))
+                except:
+                    total = 2
 
         data = self.fn_soup.findAll(class_='us_table_ty1 h_fix zigbg_no notres')[1].findAll('tr')
         for row in data:
             name = row.find('div')
             if name and "자기주식" in name.text.strip():
-                treasury = int(row.findAll(class_='r')[1].text.replace(',', '').replace('\xa0', '0'))
+                try:
+                    treasury = int(row.findAll(class_='r')[1].text.replace(',', '').replace('\xa0', '0'))
+                except:
+                    treasury = 1
 
         return total, treasury
 

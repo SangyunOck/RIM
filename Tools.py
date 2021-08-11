@@ -94,7 +94,14 @@ def getCompanyDict():
 
 
 def get_now_price(code):
-    naver_web = requests.get("https://finance.naver.com/item/main.nhn?code=" + code)
+    naver_web = None
+
+    while naver_web is None:
+        try:
+            naver_web = requests.get("https://finance.naver.com/item/main.nhn?code=" + code)
+        except:
+            pass
+
     naver_soup = BeautifulSoup(naver_web.content, "html.parser")
     try:
         price = naver_soup.find("p", {"class": "no_today"}).find("span", {"class": "blind"})
@@ -128,8 +135,14 @@ def check_if_black_list(category):
 
 def get_snap_shot_soup(code):
     time.sleep(0.1)
-    fn_web = requests.get(
-        "http://comp.fnguide.com/SVO2/ASP/SVD_Main.asp?pGB=1&gicode=A" + code + "&cID=&MenuYn=Y&ReportGB=&NewMenuID=101&stkGb=701")
+    fn_web = None
+
+    while fn_web is None:
+        try:
+            fn_web = requests.get(
+                "http://comp.fnguide.com/SVO2/ASP/SVD_Main.asp?pGB=1&gicode=A" + code + "&cID=&MenuYn=Y&ReportGB=&NewMenuID=101&stkGb=701")
+        except:
+            pass
     fn_soup = BeautifulSoup(fn_web.content, 'html.parser')
     return fn_soup
 

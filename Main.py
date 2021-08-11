@@ -34,14 +34,25 @@ class Main:
         self.db.saveData()
 
     def process(self, code, name, category, product, linked):
+        fn_web = None
+
         if linked == "연결":
             time.sleep(0.1)
-            fn_web = requests.get(
-                "http://comp.fnguide.com/SVO2/ASP/SVD_Finance.asp?pGB=1&gicode=A" + code + "&cID=&MenuYn=Y&ReportGB=D&NewMenuID=103&stkGb=701")
+            while fn_web is None:
+                try:
+                    fn_web = requests.get(
+                        "http://comp.fnguide.com/SVO2/ASP/SVD_Finance.asp?pGB=1&gicode=A" + code + "&cID=&MenuYn=Y&ReportGB=D&NewMenuID=103&stkGb=701")
+                except:
+                    pass
         else:
             time.sleep(0.1)
-            fn_web = requests.get(
-                "http://comp.fnguide.com/SVO2/ASP/SVD_Finance.asp?pGB=1&gicode=A" + code + "&cID=&MenuYn=Y&ReportGB=B&NewMenuID=103&stkGb=701")
+            while fn_web is None:
+                try:
+                    fn_web = requests.get(
+                        "http://comp.fnguide.com/SVO2/ASP/SVD_Finance.asp?pGB=1&gicode=A" + code + "&cID=&MenuYn=Y&ReportGB=B&NewMenuID=103&stkGb=701")
+                except:
+                    pass
+
         fn_soup = BeautifulSoup(fn_web.content, "html.parser")
 
         # data-> 0: 포괄손익계산서, 1: 재무상태표, 2: 현금흐름표
