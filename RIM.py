@@ -1,5 +1,6 @@
 from datetime import datetime
 import numpy as np
+import numpy_financial as np_f		
 
 
 class RIM:
@@ -112,9 +113,9 @@ class RIM:
             surplus_profit_reduce_20.append(capital_calc_reduce_20 * (ROE_calc_reduce_20 - demand))
             capital_calc_reduce_20 += capital_calc_reduce_20 * ROE_calc_reduce_20
 
-        total_value = (np.npv(demand, surplus_profit_none) + capital)
-        reduce_10_value = (np.npv(demand, surplus_profit_reduce_10) + capital)
-        reduce_20_value = (np.npv(demand, surplus_profit_reduce_20) + capital)
+        total_value = (np_f.npv(demand, surplus_profit_none) + capital)
+        reduce_10_value = (np_f.npv(demand, surplus_profit_reduce_10) + capital)
+        reduce_20_value = (np_f.npv(demand, surplus_profit_reduce_20) + capital)
 
         total_value_price = round(total_value * int(1e8) / (total_stock - treasury_stock) / (1 + demand) ** timedelta)
         reduce_10_price = round(reduce_10_value * int(1e8) / (total_stock - treasury_stock) / (1 + demand) ** timedelta)
